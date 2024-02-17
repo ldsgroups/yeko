@@ -1,5 +1,3 @@
--- This script only contains the table creation statements and does not fully represent the table in database. It's still missing: indices, triggers. Do not use it as backup.
-
 -- Table Definition
 CREATE TABLE "public"."attendances" (
     "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -12,6 +10,10 @@ CREATE TABLE "public"."attendances" (
     PRIMARY KEY ("id"),
     FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Indexes
+CREATE INDEX "idx_attendance_student_id" ON "public"."attendances" USING btree("student_id");
+CREATE INDEX "idx_attendance_date" ON "public"."attendances" USING btree("date");
 
 -- Column Comments
 COMMENT ON COLUMN "public"."attendances"."id" IS 'Unique identifier for students';

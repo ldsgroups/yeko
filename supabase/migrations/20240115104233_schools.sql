@@ -1,5 +1,3 @@
--- This script only contains the table creation statements and does not fully represent the table in database. It's still missing: indices, triggers. Do not use it as backup.
-
 -- Table Definition
 CREATE TABLE "public"."schools" (
     "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -12,10 +10,14 @@ CREATE TABLE "public"."schools" (
     "phone" varchar NOT NULL,
     "email" varchar NOT NULL,
     "created_at" timestamptz default now(),
+    "created_by" uuid default auth.uid(),
     "updated_at" timestamptz default now(),
+    "updated_by" uuid default auth.uid(),
     PRIMARY KEY ("id"),
     CONSTRAINT "schools_state_id_foreign" FOREIGN KEY ("state_id") REFERENCES "public"."states"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "schools_cycle_id_foreign" FOREIGN KEY ("cycle_id") REFERENCES "public"."cycles"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "schools_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "auth"."users"("id") ON DELETE CASCADE,
+    CONSTRAINT "schools_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "auth"."users"("id") ON DELETE CASCADE,
     CONSTRAINT "schools_phone_unique" UNIQUE ("phone"),
     CONSTRAINT "schools_email_unique" UNIQUE ("email"),
     CONSTRAINT "schools_code_unique" UNIQUE ("code")
@@ -38,3 +40,10 @@ COMMENT ON COLUMN "public"."schools"."updated_at" IS 'Timestamp of when the reco
 CREATE INDEX "idx_schools_state_id" ON "public"."schools"("state_id");
 CREATE INDEX "idx_schools_cycle_id" ON "public"."schools"("cycle_id");
 CREATE INDEX "idx_schools_code" ON "public"."schools"("code");
+
+-- Trigger for setting the updated_at and updated_by columns
+CREATE TRIGGER set_schools_traceability
+    BEFORE UPDATE
+    ON "public"."schools"
+    FOR EACH ROW
+EXECUTE PROCEDURE public.set_traceability();

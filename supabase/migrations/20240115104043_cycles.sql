@@ -1,9 +1,7 @@
--- This script only contains the table creation statements and does not fully represent the table in database. It's still missing: indices, triggers. Do not use it as backup.
-
 -- Table Definition
 CREATE TABLE "public"."cycles" (
     "id" varchar NOT NULL,
-    "name" varchar NOT NULL,
+    "name" varchar NOT NULL UNIQUE,
     "description" varchar NOT NULL,
     "created_at" timestamptz default now(),
     "updated_at" timestamptz default now(),

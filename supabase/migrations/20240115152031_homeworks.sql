@@ -1,5 +1,3 @@
--- This script only contains the table creation statements and does not fully represent the table in database. It's still missing: indices, triggers. Do not use it as backup.
-
 -- Table Definition
 CREATE TABLE "public"."homeworks" (
     "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -10,9 +8,14 @@ CREATE TABLE "public"."homeworks" (
     "created_at" timestamptz default now(),
     "updated_at" timestamptz default now(),
     PRIMARY KEY ("id"),
-    FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE CASCADE ON UPDATE CASCADE
-    -- FOREIGN KEY ("subject_id") REFERENCES "public"."subjects"("id") ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY ("subject_id") REFERENCES "public"."subjects"("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Indexes
+CREATE INDEX "idx_homework_class_id" ON "public"."homeworks" USING btree("class_id");
+CREATE INDEX "idx_homework_subject_id" ON "public"."homeworks" USING btree("subject_id");
+CREATE INDEX "idx_homework_created_at" ON "public"."homeworks" USING btree("created_at");
 
 -- Column Comments
 COMMENT ON COLUMN "public"."homeworks"."id" IS 'Unique identifier for homework';

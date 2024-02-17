@@ -21,7 +21,7 @@ INSERT INTO "public"."cycles" ("id","name","description","created_at","updated_a
 
 -- |>>>>>>> SEED SCHOOLS <<<<<<<|
 INSERT INTO "public"."schools" ("id","state_id","cycle_id","is_technical_education","name","code","address","phone","email","created_at","updated_at") VALUES 
-('cce1b0c4-87c4-4258-98d7-e5c23f555297',2,'secondary','FALSE','Collège ISPAM Adjoifou','010190',NULL,'0707070707','ispam@gmail.com','2024-01-05 05:17:13.322+00','2024-01-05 05:17:13.322+00'),
+('cce1b0c4-87c4-4258-98d7-e5c23f555297',2,'secondary','FALSE','Collège ISPAM Adjoufou','010190',NULL,'0707070707','ispam@gmail.com','2024-01-05 05:17:13.322+00','2024-01-05 05:17:13.322+00'),
 ('ed85f4e4-5133-4270-b52d-795c6e65c0f0',1,'secondary','FALSE','College Celeste Adjoufou','877363','Adjoufou','0505050505','ecole_celeste@gmail.com','2024-01-05 05:17:13.318+00','2024-01-05 05:17:13.318+00');
 
 -- |>>>>>>> SEED USERS <<<<<<<|
@@ -74,3 +74,41 @@ INSERT INTO "public"."students" ("id","parent_id","school_id","class_id","id_num
 ('eb20ef5f-0f8a-4437-bd23-3dd80d0e25dd','f6124178-83c7-4f1d-86dc-66dcafd1cece','ed85f4e4-5133-4270-b52d-795c6e65c0f0','b668814e-c1a5-4bd2-add6-88d21516a3c0','07652986Y','Olivia','Gueu','2024-01-05 05:17:13.46+00','2024-01-05 05:17:13.46+00'),
 ('91d596d6-01e9-4551-b904-1c19769f0dbf','f6124178-83c7-4f1d-86dc-66dcafd1cece','ed85f4e4-5133-4270-b52d-795c6e65c0f0','b668814e-c1a5-4bd2-add6-88d21516a3c0','07256719P','Claver','Aboh','2024-01-05 05:17:13.462+00','2024-01-05 05:17:13.462+00'),
 ('ec243d07-eef2-4f14-8036-ec907bbafe8a','f6124178-83c7-4f1d-86dc-66dcafd1cece','ed85f4e4-5133-4270-b52d-795c6e65c0f0','b668814e-c1a5-4bd2-add6-88d21516a3c0','10101010H','Même','Moi','2024-01-10 03:05:31.509+00','2024-01-10 03:05:31.509+00');
+
+-- |>>>>>>> SEED SUBJECTS <<<<<<<|
+INSERT INTO public.subjects (id, name) VALUES
+  ('123e4567-e89b-12d3-a456-426655440000', 'Mathématiques'),
+  ('123e4567-e89b-12d3-a456-426655440001', 'Français'),
+  ('123e4567-e89b-12d3-a456-426655440002', 'Anglais'),
+  ('123e4567-e89b-12d3-a456-426655440003', 'Physique - Chimie'),
+  ('123e4567-e89b-12d3-a456-426655440004', 'SVT (Sciences de la Vie et de la Terre)'),
+  ('123e4567-e89b-12d3-a456-426655440005', 'Histoire - Géographie'),
+  ('123e4567-e89b-12d3-a456-426655440006', 'Philosophie'),
+  ('123e4567-e89b-12d3-a456-426655440007', 'EPS (Éducation Physique et Sportive)'),
+  ('123e4567-e89b-12d3-a456-426655440008', 'Musique'),
+  ('123e4567-e89b-12d3-a456-426655440009', 'Arts Plastiques'),
+  ('123e4567-e89b-12d3-a456-426655440010', 'Informatique'),
+  ('123e4567-e89b-12d3-a456-426655440011', 'Langues Vivantes 2');
+
+-- |>>>>>>> SEED SCHEDULES <<<<<<<|
+-- week program for class_id = 'b668814e-c1a5-4bd2-add6-88d21516a3c0'
+-- teacher_id is random one from the teachers table
+-- subject_id is random one from the subjects table
+-- day_of_week is random number from 1 to 5
+-- room is random name like 'Salle 1', 'Salle 2', 'Salle 3', 'Salle 4', 'Salle 5', 'Salle 6', ...
+-- course start at 7:00 and end at 18:00
+-- In a day, we can have 6 courses maximum
+--  A course duration per subject is 1 hour at 75% of the time else 2 hours
+-- start_time and end_time are random numbers from 7 to 18 in sql time format
+INSERT INTO "public"."schedules" ("class_id", "subject_id", "teacher_id", "day_of_week", "start_time", "end_time", "room", "created_at", "updated_at")
+VALUES
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440000', '1fcf00bb-cd22-4065-bfbd-0a2502bcd6a7', 1, '07:00:00', '08:00:00', 'Salle 1', '2024-01-05 05:17:13.464+00', '2024-01-05 05:17:13.464+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440001', '11b52518-fcbd-40a6-84cd-f51e3129eaaf', 1, '08:00:00', '09:00:00', 'Salle 2', '2024-01-05 05:17:13.466+00', '2024-01-05 05:17:13.466+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440002', '1fcf00bb-cd22-4065-bfbd-0a2502bcd6a7', 1, '09:00:00', '10:00:00', 'Salle 3', '2024-01-05 05:17:13.468+00', '2024-01-05 05:17:13.468+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440003', '11b52518-fcbd-40a6-84cd-f51e3129eaaf', 1, '10:00:00', '11:00:00', 'Salle 4', '2024-01-05 05:17:13.47+00', '2024-01-05 05:17:13.47+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440004', '1fcf00bb-cd22-4065-bfbd-0a2502bcd6a7', 1, '11:00:00', '12:00:00', 'Salle 5', '2024-01-05 05:17:13.472+00', '2024-01-05 05:17:13.472+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440005', '11b52518-fcbd-40a6-84cd-f51e3129eaaf', 1, '12:00:00', '13:00:00', 'Salle 6', '2024-01-05 05:17:13.474+00', '2024-01-05 05:17:13.474+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440006', '1fcf00bb-cd22-4065-bfbd-0a2502bcd6a7', 2, '07:00:00', '08:00:00', 'Salle 1', '2024-01-05 05:17:13.476+00', '2024-01-05 05:17:13.476+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440007', '11b52518-fcbd-40a6-84cd-f51e3129eaaf', 2, '08:00:00', '09:00:00', 'Salle 2', '2024-01-05 05:17:13.478+00', '2024-01-05 05:17:13.478+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440008', '1fcf00bb-cd22-4065-bfbd-0a2502bcd6a7', 2, '09:00:00', '10:00:00', 'Salle 3', '2024-01-05 05:17:13.48+00', '2024-01-05 05:17:13.48+00'),
+('b668814e-c1a5-4bd2-add6-88d21516a3c0', '123e4567-e89b-12d3-a456-426655440009', '11b52518-fcbd-40a6-84cd-f51e3129eaaf', 2, '10:00:00', '11:00:00', 'Salle 4', '2024-01-05 05:17:13.482+00', '2024-01-05 05:17:13.482+00');

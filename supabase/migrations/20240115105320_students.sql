@@ -1,5 +1,3 @@
--- This script only contains the table creation statements and does not fully represent the table in database. It's still missing: indices, triggers. Do not use it as backup.
-
 -- Table Definition
 CREATE TABLE "public"."students" (
     "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -10,11 +8,15 @@ CREATE TABLE "public"."students" (
     "first_name" varchar NOT NULL,
     "last_name" varchar NOT NULL,
     "created_at" timestamptz default now(),
+    "created_by" uuid default auth.uid(),
     "updated_at" timestamptz default now(),
+    "updated_by" uuid default auth.uid(),
     PRIMARY KEY ("id"),
     FOREIGN KEY ("parent_id") REFERENCES "public"."parents"("id") ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY ("school_id") REFERENCES "public"."schools"("id") ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY ("class_id") REFERENCES "public"."classes"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "students_created_by_foreign" FOREIGN KEY ("created_by") REFERENCES "auth"."users"("id") ON DELETE CASCADE,
+    CONSTRAINT "students_updated_by_foreign" FOREIGN KEY ("updated_by") REFERENCES "auth"."users"("id") ON DELETE CASCADE,
     CONSTRAINT "students_id_number_key" UNIQUE ("id_number")
 );
 
@@ -33,3 +35,12 @@ COMMENT ON COLUMN "public"."students"."updated_at" IS 'Timestamp of when the stu
 CREATE INDEX "idx_student_parent_id" ON "public"."students" USING btree("parent_id");
 CREATE INDEX "idx_student_school_id" ON "public"."students" USING btree("school_id");
 CREATE INDEX "idx_student_class_id" ON "public"."students" USING btree("class_id");
+CREATE INDEX "idx_student_id_number" ON "public"."students" USING btree("id_number");
+CREATE INDEX "idx_student_created_at" ON "public"."students" USING btree("created_at");
+
+-- Trigger for setting the updated_at and updated_by columns
+CREATE TRIGGER set_students_traceability
+    BEFORE UPDATE
+    ON "public"."students"
+    FOR EACH ROW
+EXECUTE PROCEDURE public.set_traceability();

@@ -13,6 +13,7 @@
     "files.exclude": {
       "supabase/functions/": true
     },
+    "cSpell.language": "en, fr",
     "cSpell.words": [
       "plpgsql",
       "SQLERRM"
