@@ -2,8 +2,8 @@
 CREATE TABLE "public"."students" (
     "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
     "parent_id" uuid NOT NULL,
-    "school_id" uuid NOT NULL,
-    "class_id" uuid NOT NULL,
+    "school_id" uuid,
+    "class_id" uuid,
     "id_number" varchar NOT NULL,
     "first_name" varchar NOT NULL,
     "last_name" varchar NOT NULL,
